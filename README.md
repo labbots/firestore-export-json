@@ -1,4 +1,10 @@
-# Firestore Export JSON
+<h1 align="center">Bash Utility</h1>
+
+<p align="center">
+<a href="https://github.com/labbots/firestore-export-json/stargazers"><img src="https://img.shields.io/github/stars/labbots/firestore-export-json.svg?color=blueviolet&style=for-the-badge" alt="Stars"></a>
+<a href="https://github.com/labbots/firestore-export-json/blob/master/LICENSE"><img src="https://img.shields.io/github/license/labbots/firestore-export-json.svg?style=for-the-badge" alt="License"></a>
+<a href="https://www.codacy.com/gh/labbots/firestore-export-json/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=labbots/firestore-export-json&amp;utm_campaign=Badge_Grade"><img src="https://img.shields.io/codacy/grade/7fe7c1503f574ac1a2072e611f562896?style=for-the-badge"/></a>
+</p>
 Convert google firestore/datastore LevelDB exports to JSON data.
 
 ## Dependencies
