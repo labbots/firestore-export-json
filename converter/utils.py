@@ -52,5 +52,4 @@ def serialize_json(obj):
             obj.microsecond / 1000
         )
         return millis
-    # raise TypeError('Not sure how to serialize %s' % (obj,))
     return str(obj)
