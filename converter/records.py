@@ -1,7 +1,3 @@
-import os
-import io
-import json
-import sys
 import logging
 import struct
 
@@ -81,13 +77,13 @@ _MASK = 0xFFFFFFFF
 
 def crc_update(crc, data):
     """Update CRC-32C checksum with data.
+
     Args:
       crc: 32-bit checksum to update as long.
       data: byte array, string or iterable over bytes.
     Returns:
       32-bit updated CRC-32C as long.
     """
-
     if type(data) != array.array or data.itemsize != 1:
         buf = array.array("B", data)
     else:
@@ -102,6 +98,7 @@ def crc_update(crc, data):
 
 def crc_finalize(crc):
     """Finalize CRC-32C checksum.
+
     This function should be called as last step of crc calculation.
     Args:
       crc: 32-bit checksum as long.
@@ -113,6 +110,7 @@ def crc_finalize(crc):
 
 def crc(data):
     """Compute CRC-32C checksum of the data.
+
     Args:
       data: byte array, string or iterable over bytes.
     Returns:
@@ -139,14 +137,17 @@ RECORD_TYPE_LAST = 4
 
 
 class Error(Exception):
+
     """Base class for exceptions in this module."""
 
 
 class InvalidRecordError(Error):
+
     """Raised when invalid record encountered."""
 
 
 class FileReader(object):
+
     """Interface specification for writers to be used with recordrecords module.
     FileReader defines a reader with position and efficient seek/position
     determining. All reads occur at current position.
@@ -154,6 +155,7 @@ class FileReader(object):
 
     def read(self, size):
         """Read data from file.
+
         Reads data from current position and advances position past the read data
         block.
         Args:
@@ -166,6 +168,7 @@ class FileReader(object):
 
     def tell(self):
         """Get current file position.
+
         Returns:
           current position as a byte offset in the file as integer.
         """
@@ -177,6 +180,7 @@ _CRC_MASK_DELTA = 0xa282ead8
 
 def _mask_crc(crc):
     """Mask crc.
+
     Args:
       crc: integer crc.
     Returns:
@@ -187,6 +191,7 @@ def _mask_crc(crc):
 
 def _unmask_crc(masked_crc):
     """Unmask crc.
+
     Args:
       masked_crc: masked integer crc.
     Retruns:
@@ -197,6 +202,7 @@ def _unmask_crc(masked_crc):
 
 
 class RecordsReader(object):
+
     """A reader for records format."""
 
     def __init__(self, reader):
@@ -297,6 +303,7 @@ class RecordsReader(object):
                 self.__sync()
 
     def __iter__(self):
+        """Iterate through records."""
         try:
             while True:
                 yield self.read()

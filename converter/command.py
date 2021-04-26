@@ -12,8 +12,6 @@ from converter.exceptions import ValidationError, BaseError
 from converter import records
 from converter.utils import get_dest_dict, embedded_entity_to_dict, serialize_json
 
-from devtools import debug
-
 
 def main(args=None):
     if args is None:
