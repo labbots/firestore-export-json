@@ -46,3 +46,6 @@ $ python fs_to_json.py [path_to_source_dir] -d [path_to_destination]
 1. Provide the path to the directory where files such as `output-0` exists as source directory usually this would be `kinds_*` directory.
 2. Destination directory can be specified where the json files will be created. If not provided then the json files will be created using `json` folder in source directory.
 
+## Inspired By
+
+* [Venryx/firestore-leveldb-tools](https://github.com/Venryx/firestore-leveldb-tools) - LevelDB files to JSON converter written in python 2.7.
