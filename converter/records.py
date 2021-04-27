@@ -82,8 +82,9 @@ def crc_update(crc, data):
       crc: 32-bit checksum to update as long.
       data: byte array, string or iterable over bytes.
     Returns:
-      32-bit updated CRC-32C as long."""
-    if type(data) != array.array or data.itemsize != 1:
+      32-bit updated CRC-32C as long.
+    """
+    if not isinstance(data, array.array) or data.itemsize != 1:
         buf = array.array("B", data)
     else:
         buf = data
@@ -136,18 +137,16 @@ RECORD_TYPE_LAST = 4
 
 
 class Error(Exception):
-
     """Base class for exceptions in this module."""
 
 
 class InvalidRecordError(Error):
-
     """Raised when invalid record encountered."""
 
 
 class FileReader(object):
-
     """Interface specification for writers to be used with recordrecords module.
+
     FileReader defines a reader with position and efficient seek/position
     determining. All reads occur at current position.
     """
@@ -201,7 +200,6 @@ def _unmask_crc(masked_crc):
 
 
 class RecordsReader(object):
-
     """A reader for records format."""
 
     def __init__(self, reader):
@@ -296,7 +294,7 @@ class RecordsReader(object):
                     raise InvalidRecordError("Unsupported record type: %s" % record_type)
 
             except InvalidRecordError:
-                logging.warning("Invalid record encountered at %s (%s). Syncing to "
+                logging.warning("Invalid record encountered at %s. Syncing to "
                                 "the next block", last_offset)
                 data = None
                 self.__sync()
