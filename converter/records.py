@@ -82,8 +82,7 @@ def crc_update(crc, data):
       crc: 32-bit checksum to update as long.
       data: byte array, string or iterable over bytes.
     Returns:
-      32-bit updated CRC-32C as long.
-    """
+      32-bit updated CRC-32C as long."""
     if type(data) != array.array or data.itemsize != 1:
         buf = array.array("B", data)
     else:
