@@ -1,4 +1,4 @@
-<h1 align="center">Bash Utility</h1>
+<h1 align="center">Firestore Export JSON</h1>
 
 <p align="center">
 <a href="https://github.com/labbots/firestore-export-json/stargazers"><img src="https://img.shields.io/github/stars/labbots/firestore-export-json.svg?color=blueviolet&style=for-the-badge" alt="Stars"></a>
