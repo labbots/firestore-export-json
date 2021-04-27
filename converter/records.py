@@ -207,6 +207,7 @@ class RecordsReader(object):
 
     def __try_read_record(self):
         """Try reading a record.
+
         Returns:
           (data, record_type) tuple.
         Raises:

@@ -61,6 +61,7 @@ def main(args=None):
 def process_files(source_dir: str, dest_dir: str):
     json_tree = {}
     files = sorted(os.listdir(source_dir))
+    documents = 0
     for filename in files:
         if not filename.startswith("output-"):
             continue
@@ -68,7 +69,7 @@ def process_files(source_dir: str, dest_dir: str):
         in_path = os.path.join(source_dir, filename)
         raw = open(in_path, 'rb')
         reader = records.RecordsReader(raw)
-        for recordIndex, record in enumerate(reader):
+        for record in reader:
             entity_proto = entity_pb2.EntityProto()
             entity_proto.ParseFromString(record)
             ds_entity = datastore.Entity.FromPb(entity_proto)
@@ -82,6 +83,7 @@ def process_files(source_dir: str, dest_dir: str):
 
             data_dict = get_dest_dict(ds_entity.key(), json_tree)
             data_dict.update(data)
+            documents += 1
 
         out_file_path = os.path.join(dest_dir, filename + '.json')
         out = open(out_file_path, 'w', encoding='utf8')
@@ -89,6 +91,7 @@ def process_files(source_dir: str, dest_dir: str):
         out.close()
         print("JSON file written to: " + out_file_path)
         json_tree = {}
+    print(f"Total documents in collections : {documents}")
 
 
 if __name__ == '__main__':
