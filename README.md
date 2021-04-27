@@ -60,6 +60,10 @@ Convert google firestore/datastore LevelDB exports to JSON data.
 
 ## Usage
 
+1. Export firestore collections using firestore admin tools. Follow the [instructions here](https://firebase.google.com/docs/firestore/manage-data/export-import#export_data) to backup firestore.
+2. The exports are stored in google cloud storage. Download the exported data directory from cloud storage.
+3. Use the below command to convert the exported data to JSON. 
+
 ### Method 1
 
 `fs_to_json.py` can be used to convert the firestore/datastore export files to JSON data.
