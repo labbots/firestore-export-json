@@ -36,9 +36,9 @@ def embedded_entity_to_dict(embedded_entity, data):
             dt = {}
             data[entry['name']] = embedded_entity_to_dict(base64.b64decode(entry['value']['stringValue']), dt)
         else:
-            if entry['value']:
+            try:
                 data[entry['name']] = base64.b64decode(entry['value']['stringValue']).decode('utf-8')
-            else:
+            except:
                 data[entry['name']] = None
     return data
 
