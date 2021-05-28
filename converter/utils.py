@@ -31,7 +31,7 @@ def embedded_entity_to_dict(embedded_entity, data):
     ep = entity_pb2.EntityProto()
     ep.ParseFromString(embedded_entity)
     d = MessageToDict(ep)
-    for entry in d['rawProperty']:
+    for entry in d.get('rawProperty', []):
         if 'meaning' in entry and entry['meaning'] == "ENTITY_PROTO":
             dt = {}
             data[entry['name']] = embedded_entity_to_dict(base64.b64decode(entry['value']['stringValue']), dt)
