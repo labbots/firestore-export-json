@@ -57,7 +57,6 @@ def main(args=None):
     )
 
     args = parser.parse_args(args)
-    print(args)
     try:
         source_dir = os.path.abspath(args.source_dir)
         if not os.path.isdir(source_dir):
