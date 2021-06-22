@@ -97,6 +97,8 @@ def process_files(source_dir: str, dest_dir: str, num_processes: int):
 
 
 def process_file(source_dir: str, dest_dir: str, filename: str):
+    if not filename.startswith("output-"):
+        return
     json_tree: Dict = {}
     in_file = os.path.join(source_dir, filename)
     print("Reading source from:" + in_file)
