@@ -104,8 +104,6 @@ def process_files(
 ):
     p = Pool(num_processes)
     files = sorted(os.listdir(source_dir))
-    for filename in files:
-        in_path = os.path.join(source_dir, filename)
 
     f = partial(process_file, source_dir, dest_dir, no_check_crc)
     p.map(f, files)
