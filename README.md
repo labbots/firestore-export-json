@@ -67,6 +67,9 @@ Convert google firestore/datastore LevelDB exports to JSON data.
     To set this to something different use the `-P`/`--processes` flags e.g. `./fs_to_json.py source/ dest/ -P 1`
 5. By default, this will not clear out any files from the destination directory.
     To force a clean before running use the `-C`/`--clean-dest` flag e.g. `./fs_to_json.py source/ dest/ -C`
+6. By default, this will attempt to use a hardware-accelerated crc32c check to verify the integrity of the blocks of data. Without
+    hardware acceleration, this can be a costly process. If you don't have hardware acceleration, you can disable the checks with the `-c`/`--no-check-crc` flag.
+    The penalty for not running any crc32c checks is that you might have corrupt or missing data in the json output.
 
 ### Method 1
 
