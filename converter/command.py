@@ -59,7 +59,9 @@ def main(args=None):
     parser.add_argument(
         "-c",
         "--no-check-crc",
-        help=f"Turn off the check/computation of CRC values for the records. This will increase performance at the cost of potentially having corrupt data, mostly on systems without accelerated crc32c.",
+        help="Turn off the check/computation of CRC values for the records."
+        "This will increase performance at the cost of potentially having corrupt data,"
+        "mostly on systems without accelerated crc32c.",
         default=False,
         action="store_true",
     )

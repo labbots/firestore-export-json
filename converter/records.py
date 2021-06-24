@@ -1,6 +1,4 @@
-import array
 import logging
-import os
 import struct
 
 import google_crc32c
