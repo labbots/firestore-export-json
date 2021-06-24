@@ -56,7 +56,16 @@ def main(args=None):
         action="store_true",
     )
 
+    parser.add_argument(
+        "-c",
+        "--no-check-crc",
+        help=f"Turn off the check/computation of CRC values for the records. This will increase performance at the cost of potentially having corrupt data, mostly on systems without accelerated crc32c.",
+        default=False,
+        action="store_true",
+    )
+
     args = parser.parse_args(args)
+    print(args)
     try:
         source_dir = os.path.abspath(args.source_dir)
         if not os.path.isdir(source_dir):
@@ -78,24 +87,29 @@ def main(args=None):
                     print("Error: %s : %s" % (f, e.strerror))
 
         process_files(
-            source_dir=source_dir, dest_dir=dest_dir, num_processes=args.processes
+            source_dir=source_dir,
+            dest_dir=dest_dir,
+            num_processes=args.processes,
+            no_check_crc=args.no_check_crc,
         )
     except BaseError as e:
         print(str(e))
         sys.exit(1)
 
 
-def process_files(source_dir: str, dest_dir: str, num_processes: int):
+def process_files(
+    source_dir: str, dest_dir: str, num_processes: int, no_check_crc: bool
+):
     p = Pool(num_processes)
     files = sorted(os.listdir(source_dir))
     for filename in files:
         in_path = os.path.join(source_dir, filename)
 
-    f = partial(process_file, source_dir, dest_dir)
+    f = partial(process_file, source_dir, dest_dir, no_check_crc)
     p.map(f, files)
 
 
-def process_file(source_dir: str, dest_dir: str, filename: str):
+def process_file(source_dir: str, dest_dir: str, no_check_crc: bool, filename: str):
     if not filename.startswith("output-"):
         return
     json_tree: Dict = {}
@@ -103,13 +117,14 @@ def process_file(source_dir: str, dest_dir: str, filename: str):
     print("Reading source from:" + in_file)
 
     with open(in_file, "rb") as raw:
-        reader = records.RecordsReader(raw)
+        reader = records.RecordsReader(raw, no_check_crc=no_check_crc)
         for record in reader:
             entity_proto = entity_pb2.EntityProto()
             entity_proto.ParseFromString(record)
             ds_entity = datastore.Entity.FromPb(entity_proto)
             data = {}
             for name, value in list(ds_entity.items()):
+                len(name)
                 if isinstance(value, EmbeddedEntity):
                     dt: Dict = {}
                     data[name] = embedded_entity_to_dict(value, dt)

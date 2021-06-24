@@ -31,15 +31,19 @@ def embedded_entity_to_dict(embedded_entity, data):
     ep = entity_pb2.EntityProto()
     ep.ParseFromString(embedded_entity)
     d = MessageToDict(ep)
-    for entry in d.get('rawProperty', []):
-        if 'meaning' in entry and entry['meaning'] == "ENTITY_PROTO":
+    for entry in d.get("rawProperty", []):
+        if "meaning" in entry and entry["meaning"] == "ENTITY_PROTO":
             dt = {}
-            data[entry['name']] = embedded_entity_to_dict(base64.b64decode(entry['value']['stringValue']), dt)
+            data[entry["name"]] = embedded_entity_to_dict(
+                base64.b64decode(entry["value"]["stringValue"]), dt
+            )
         else:
             try:
-                data[entry['name']] = base64.b64decode(entry['value']['stringValue']).decode('utf-8')
+                data[entry["name"]] = base64.b64decode(
+                    entry["value"]["stringValue"]
+                ).decode("utf-8")
             except:
-                data[entry['name']] = None
+                data[entry["name"]] = None
     return data
 
 
@@ -47,9 +51,6 @@ def serialize_json(obj):
     if isinstance(obj, datetime.datetime):
         if obj.utcoffset() is not None:
             obj = obj - obj.utcoffset()
-        millis = int(
-            calendar.timegm(obj.timetuple()) * 1000 +
-            obj.microsecond / 1000
-        )
+        millis = int(calendar.timegm(obj.timetuple()) * 1000 + obj.microsecond / 1000)
         return millis
     return str(obj)
