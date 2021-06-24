@@ -63,24 +63,34 @@ Convert google firestore/datastore LevelDB exports to JSON data.
 1. Export firestore collections using firestore admin tools. Follow the [instructions here](https://firebase.google.com/docs/firestore/manage-data/export-import#export_data) to backup firestore.
 2. The exports are stored in google cloud storage. Download the exported data directory from cloud storage.
 3. Use the below command to convert the exported data to JSON. 
+4. By default, running the command will use (num_cpus - 1) processes to process the data. This can greatly speed up processing. 
+    To set this to something different use the `-P`/`--processes` flags e.g. `./fs_to_json.py source/ dest/ -P 1`
+5. By default, this will not clear out any files from the destination directory.
+    To force a clean before running use the `-C`/`--clean-dest` flag e.g. `./fs_to_json.py source/ dest/ -C`
 
 ### Method 1
 
 `fs_to_json.py` can be used to convert the firestore/datastore export files to JSON data.
 
 ```shell
-$ python fs_to_json.py [path_to_source_dir] -d [path_to_destination]
+$ python fs_to_json.py path_to_source_dir path_to_destination
 ```
 
 1. Provide the path to the directory where files such as `output-0` exists as source directory usually this would be `kinds_*` directory.
-2. Destination directory can be specified where the json files will be created. If not provided then the json files will be created using `json` folder in source directory.
+2. Destination directory must be specified where the json files will be created. If not provided then the json files will be created using `json` folder in source directory.
+
+e.g.
+```shell
+# this will look for all files in exports/all_namespaces/kind_collection-id that start with `output-` and put the resulting json files in out/collection-id
+python fs_to_json.py exports/all_namespaces/kind_collection-id out/collection-id
+```
 
 ### Method 2
 
 The project exposes console script using setuptools to provide `fs_to_json` CLI command which can be used to convert exports to JSON.
 
 ```shell
-$ fs_to_json [path_to_source_dir] -d [path_to_destination]
+$ fs_to_json path_to_source_dir path_to_destination
 ```
 
 
