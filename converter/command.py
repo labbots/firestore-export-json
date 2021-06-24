@@ -51,7 +51,7 @@ def main(args=None):
     parser.add_argument(
         "-C",
         "--clean-dest",
-        help=f"Remove all json files from output dir",
+        help="Remove all json files from output dir",
         default=False,
         action="store_true",
     )
@@ -59,7 +59,9 @@ def main(args=None):
     parser.add_argument(
         "-c",
         "--no-check-crc",
-        help=f"Turn off the check/computation of CRC values for the records. This will increase performance at the cost of potentially having corrupt data, mostly on systems without accelerated crc32c.",
+        help="Turn off the check/computation of CRC values for the records."
+        "This will increase performance at the cost of potentially having corrupt data,"
+        "mostly on systems without accelerated crc32c.",
         default=False,
         action="store_true",
     )
