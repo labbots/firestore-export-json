@@ -51,7 +51,7 @@ def main(args=None):
     parser.add_argument(
         "-C",
         "--clean-dest",
-        help=f"Remove all json files from output dir",
+        help="Remove all json files from output dir",
         default=False,
         action="store_true",
     )
