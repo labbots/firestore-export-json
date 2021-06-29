@@ -6,7 +6,6 @@ from functools import partial
 from multiprocessing import Pool, cpu_count, Value
 from pathlib import Path
 from typing import Dict
-from threading import Lock
 
 from google.appengine.api import datastore
 from google.appengine.api.datastore_types import EmbeddedEntity
@@ -18,6 +17,7 @@ from converter.utils import embedded_entity_to_dict, get_dest_dict, serialize_js
 
 num_files: Value = Value("i", 0)
 num_files_processed: Value = Value("i", 0)
+
 
 def main(args=None):
     if args is None:
@@ -109,10 +109,11 @@ def process_files(
     num_files.value = len(files)
     print(f"processing {num_files.value} file(s)")
 
-
     f = partial(process_file, source_dir, dest_dir, no_check_crc)
     p.map(f, files)
-    print(f"processed: {num_files_processed.value}/{num_files.value} {num_files_processed.value/num_files.value*100}%")
+    print(
+        f"processed: {num_files_processed.value}/{num_files.value} {num_files_processed.value/num_files.value*100}%"
+    )
 
 
 def process_file(source_dir: str, dest_dir: str, no_check_crc: bool, filename: str):
@@ -144,7 +145,9 @@ def process_file(source_dir: str, dest_dir: str, no_check_crc: bool, filename: s
             json.dumps(json_tree, default=serialize_json, ensure_ascii=False, indent=2)
         )
     num_files_processed.value += 1
-    print(f"progress: {num_files_processed.value}/{num_files.value} {num_files_processed.value/num_files.value*100}%")
+    print(
+        f"progress: {num_files_processed.value}/{num_files.value} {num_files_processed.value/num_files.value*100}%"
+    )
 
 
 if __name__ == "__main__":
