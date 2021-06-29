@@ -3,9 +3,10 @@ import json
 import os
 import sys
 from functools import partial
-from multiprocessing import Pool, cpu_count
+from multiprocessing import Pool, cpu_count, Value
 from pathlib import Path
 from typing import Dict
+from threading import Lock
 
 from google.appengine.api import datastore
 from google.appengine.api.datastore_types import EmbeddedEntity
@@ -15,6 +16,8 @@ from converter import records
 from converter.exceptions import BaseError, ValidationError
 from converter.utils import embedded_entity_to_dict, get_dest_dict, serialize_json
 
+num_files: Value = Value("i", 0)
+num_files_processed: Value = Value("i", 0)
 
 def main(args=None):
     if args is None:
@@ -104,9 +107,13 @@ def process_files(
 ):
     p = Pool(num_processes)
     files = sorted(os.listdir(source_dir))
+    num_files.value = len(files)
+    print(f"processing {num_files.value} file(s)")
+
 
     f = partial(process_file, source_dir, dest_dir, no_check_crc)
     p.map(f, files)
+    print(f"processed: {num_files_processed.value}/{num_files.value} {num_files_processed.value/num_files.value*100}%")
 
 
 def process_file(source_dir: str, dest_dir: str, no_check_crc: bool, filename: str):
@@ -114,7 +121,6 @@ def process_file(source_dir: str, dest_dir: str, no_check_crc: bool, filename: s
         return
     json_tree: Dict = {}
     in_file = os.path.join(source_dir, filename)
-    print("Reading source from:" + in_file)
 
     with open(in_file, "rb") as raw:
         reader = records.RecordsReader(raw, no_check_crc=no_check_crc)
@@ -124,7 +130,6 @@ def process_file(source_dir: str, dest_dir: str, no_check_crc: bool, filename: s
             ds_entity = datastore.Entity.FromPb(entity_proto)
             data = {}
             for name, value in list(ds_entity.items()):
-                len(name)
                 if isinstance(value, EmbeddedEntity):
                     dt: Dict = {}
                     data[name] = embedded_entity_to_dict(value, dt)
@@ -139,7 +144,8 @@ def process_file(source_dir: str, dest_dir: str, no_check_crc: bool, filename: s
         out.write(
             json.dumps(json_tree, default=serialize_json, ensure_ascii=False, indent=2)
         )
-    print("JSON file written to: " + out_file_path)
+    num_files_processed.value += 1
+    print(f"progress: {num_files_processed.value}/{num_files.value} {num_files_processed.value/num_files.value*100}%")
 
 
 if __name__ == "__main__":
