@@ -1,4 +1,7 @@
+#!/usr/bin/env python
+
 import sys
+
 from converter import command
 
 
@@ -7,5 +10,5 @@ def main():
     command.main(args=args)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
