@@ -145,9 +145,10 @@ def process_file(source_dir: str, dest_dir: str, no_check_crc: bool, filename: s
             json.dumps(json_tree, default=serialize_json, ensure_ascii=False, indent=2)
         )
     num_files_processed.value += 1
-    print(
-        f"progress: {num_files_processed.value}/{num_files.value} {num_files_processed.value/num_files.value*100}%"
-    )
+    if num_files.value > 0:
+        print(
+            f"progress: {num_files_processed.value}/{num_files.value} {num_files_processed.value/num_files.value*100}%"
+        )
 
 
 if __name__ == "__main__":
