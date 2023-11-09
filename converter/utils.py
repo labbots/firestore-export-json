@@ -49,11 +49,22 @@ def embedded_entity_to_dict(embedded_entity, data):
     for entry in d.get("rawProperty", []):
         name = entry.get("name")
         value = entry.get("value")
+        multiple = entry.get("multiple")
+        if multiple and not name in data:
+            data[name] = []
         if entry.get("meaning") == "ENTITY_PROTO":
             dt = {}
-            data[name] = embedded_entity_to_dict(get_value(value, raw=True), dt)
+            newdata = embedded_entity_to_dict(get_value(value, raw=True), dt)
+            if multiple:
+                data[name].append(newdata)
+            else:
+                data[name] = newdata
         else:
-            data[name] = get_value(value)
+            newdata = get_value(value)
+            if multiple:
+                data[name].append(newdata)
+            else:
+                data[name] = newdata
     return data
 
 
