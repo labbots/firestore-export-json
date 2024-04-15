@@ -1,7 +1,7 @@
-appengine-python-standard==0.0.2a1
-devtools==0.6.1
-protobuf==3.18.3
-ruamel.yaml==0.15.100
-six==1.15.0
+appengine-python-standard==1.1.1
+devtools==0.11.0
+protobuf==4.23.2 
+ruamel.yaml==0.17.29
+six==1.16.0
 urllib3==1.26.18
-google-crc32c==1.1.2
+google-crc32c==1.5.0
