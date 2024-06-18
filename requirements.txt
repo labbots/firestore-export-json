@@ -3,5 +3,5 @@ devtools==0.11.0
 protobuf==4.23.2 
 ruamel.yaml==0.17.29
 six==1.16.0
-urllib3==1.26.18
+urllib3==1.26.19
 google-crc32c==1.5.0
